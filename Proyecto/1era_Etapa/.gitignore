@@ -1,0 +1,9 @@
+#executable programs
+potato
+potato_asan
+potato_msan
+potato_tsan
+potato_ubsan
+
+#doxygen documentation
+doc
