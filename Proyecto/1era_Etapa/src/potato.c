@@ -93,7 +93,6 @@ int main(/* int argc, char ** argv */) {
   return error;
 }
 
-
 int create_threads(shared_data_t* shared_data) {
   int error = 0;
   pthread_t* threads = (pthread_t*)
@@ -151,7 +150,8 @@ void* game(void* data) {
         shared_data->potato_value = potato_value;
         printf("  Potato value:  %u\n", shared_data->potato_value);
       }
-      printf("  Active players %u\n", shared_data->active_players);
+      printf("  Active players: %u\n", shared_data->active_players);
+      printf("\n");
     }
     sem_post(&shared_data->sem_array[(my_id + 1) % thread_count]);
   }

@@ -33,13 +33,12 @@ memcheck:
 memcheck_full:
 	valgrind --leak-check=full ./$(BINFOLDER)$(APPNAME)
 
-
 .PHONY: helgrind
 helgrind:
-	valgrind --tool=helgrind --quiet ./$(BINFOLDER)$(APPNAME)
+	valgrind --tool=helgrind ./$(BINFOLDER)$(APPNAME)
 
 .PHONY: rebuild
-rebuild: clean $(BINFOLDER)$(APPNAME)
+rebuild: clean $(EXECUTABLES)
 
 .PHONY: lint
 lint:
