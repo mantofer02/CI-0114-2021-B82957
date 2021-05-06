@@ -23,7 +23,6 @@ typedef struct {
   int game_direction;
   int potato_value;
   int active_players;
-  // pthread_mutex_t mutex;
   sem_t* sem_array;
 } shared_data_t;
 
@@ -36,14 +35,12 @@ typedef struct {
   shared_data_t* shared_data;
 } private_data_t;
 
-
 /**
  * @brief Method for thread creation
  * @param shared_data A pointer to a shared data structure
  * @return 0 if success, ohterwise THREAD_CREATION_ERROR
  */
 int create_threads(shared_data_t* shared_data);
-
 
 /**
  * @brief Method for potato game
@@ -54,7 +51,6 @@ int create_threads(shared_data_t* shared_data);
  */
 void* game(void* data);
 
-
 /**
  * @brief Method for collatz conjeture
  * @param n number which collatz shall be applied to
@@ -62,13 +58,22 @@ void* game(void* data);
  */
 int collatz(int n);
 
-int main(/* int argc, char ** argv */) {
+int main(int argc, char ** argv) {
   int error = EXIT_SUCCESS;
   int thread_count, user_potato_value, game_direction;
 
-  thread_count = 5;
+  thread_count = sysconf(_SC_NPROCESSORS_ONLN);
   user_potato_value = 10;
   game_direction = RIGHT;
+
+  if (argc > 3) {
+    thread_count = atoi(argv[1]);
+    user_potato_value = atoi(argv[2]);
+    if (atoi(argv[3]) == RIGHT || atoi(argv[3]) == LEFT) {
+      game_direction = atoi(argv[3]);
+    }
+  }
+
 
   shared_data_t* shared_data = (shared_data_t*)
     calloc(1, sizeof(shared_data_t));
@@ -131,7 +136,9 @@ void* game(void* data) {
   shared_data_t* shared_data = private_data->shared_data;
   const size_t my_id = private_data->thread_id;
   const size_t thread_count = shared_data->thread_count;
+  const int game_direction = shared_data->game_direction;
   int potato_value = 0;
+  int next_thread = 0;
 
   while (shared_data->active_players) {
     sem_wait(&shared_data->sem_array[my_id]);
@@ -153,7 +160,13 @@ void* game(void* data) {
       printf("  Active players: %u\n", shared_data->active_players);
       printf("\n");
     }
-    sem_post(&shared_data->sem_array[(my_id + 1) % thread_count]);
+    if (game_direction == RIGHT) {
+      sem_post(&shared_data->sem_array[(my_id + 1) % thread_count]);
+    } else {
+      next_thread = my_id - 1;
+      if (next_thread < 0) {next_thread = thread_count - 1;}
+      sem_post(&shared_data->sem_array[next_thread]);
+    }
   }
   return NULL;
 }
