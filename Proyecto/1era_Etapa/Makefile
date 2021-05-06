@@ -50,4 +50,4 @@ gitignore:
 
 .PHONY: clean
 clean:
-	rm -rf $(EXECUTABLES)
+	rm -rf $(BINFOLDER)$(EXECUTABLES)

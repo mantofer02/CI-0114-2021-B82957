@@ -100,6 +100,7 @@ int main(int argc, char ** argv) {
 
 int create_threads(shared_data_t* shared_data) {
   int error = 0;
+  int initial_value = 1;
   pthread_t* threads = (pthread_t*)
     malloc(shared_data->thread_count * sizeof(pthread_t));
 
@@ -108,7 +109,10 @@ int create_threads(shared_data_t* shared_data) {
 
   if (threads && private_data) {
     for (size_t index = 0; index < shared_data->thread_count; index++) {
-      sem_init(&shared_data->sem_array[index], 0, !index);
+      if (index != 0) {
+        initial_value = 0;
+      }
+      sem_init(&shared_data->sem_array[index], 0, initial_value);
 
       private_data[index].thread_id = index;
       private_data[index].playing = true;
