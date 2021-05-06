@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to execute the program
 #Command to habilitate x permisison: chmod +x run.sh
-# 6 threads with 6 initial value and direction left
+# 3 threads with 15 initial value and direction right
 # -1 == LEFT; 1 == RIGHT
-./bin/potato 6 5 -1
+./bin/potato 3 5 1
