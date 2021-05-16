@@ -10,7 +10,7 @@
 #define INITIALIAZED 1
 class Cache {
   protected:
-    class CacheBlock {
+    class CacheLine {
       private:
         size_t block_size;
         // numero de conjunto
@@ -25,8 +25,7 @@ class Cache {
         int init;
 
       public:
-        CacheBlock() {
-          std :: cout << "CONSTRUCTOR" << std :: endl;
+        CacheLine() {
           this->block_size = 0;
           this->set_number = 0;
           this->tag = 0;
@@ -75,8 +74,9 @@ class Cache {
     size_t block_size;
     size_t cache_access_cycle;
     size_t memory_access_cycle;
-
-    std::vector<CacheBlock> cache_blocks;
+    // todos los accessos
+    size_t cpu_cycles;
+    std::vector<CacheLine> cache_lines;
     size_t mapping_policy;
 
     size_t store_hits;

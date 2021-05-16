@@ -8,6 +8,7 @@ size_t block_size, size_t cache_access_cycle, size_t memory_access_cycle) {
     this->set_amount = set_amount;
     this->block_amount = block_amount;
     this->block_size = block_size;
+    this->cpu_cycles = 0;
     this->cache_access_cycle = cache_access_cycle;
     this->memory_access_cycle = memory_access_cycle;
     this->mapping_policy = DIRECT_MAPPING;
@@ -22,10 +23,10 @@ size_t block_size, size_t cache_access_cycle, size_t memory_access_cycle) {
 }
 
 void DM_Cache :: initialize_cache() {
-  CacheBlock new_block;
+  CacheLine new_block;
   for (int i = 0; i < block_amount; i++) {
-    // cache_blocks.
-    this->cache_blocks.push_back(new_block);
+    // cache_lines.
+    this->cache_lines.push_back(new_block);
   }
 }
 
@@ -46,14 +47,20 @@ void DM_Cache :: store(unsigned long long memory_address) {
   size_t memory_block_address = get_block_address(memory_address);
   size_t memory_tag_value = get_tag_value(memory_address);
 
-  if (!cache_blocks[memory_block_address].is_initialized()) {
-    // store miss
+  if (!cache_lines[memory_block_address].is_initialized()) {
+    cache_lines[memory_block_address].initialize();
+    store_miss(memory_block_address, memory_tag_value);
   } else {
-    if (cache_blocks[memory_block_address].get_tag() != memory_tag_value) {
-      // store miss
+    if (cache_lines[memory_block_address].get_tag() != memory_tag_value) {
+      store_miss(memory_block_address, memory_tag_value);
     } else {
       //store hit
     }
   }
+}
 
+void DM_Cache :: store_miss(size_t memory_block_address, size_t memory_tag_value) {
+  cache_lines[memory_block_address].set_tag(memory_tag_value);
+  this->store_misses++;
+  this->cpu_cycles += (this->memory_access_cycle + this->cache_access_cycle);
 }
