@@ -5,8 +5,9 @@
 #include <vector>
 
 #define DIRECT_MAPPING 1
-#define FULLY_ASSOCIATIVE 2  
-
+#define FULLY_ASSOCIATIVE 2
+#define UNINITIALIAZED 0
+#define INITIALIAZED 1
 class Cache {
   protected:
     class CacheBlock {
@@ -20,13 +21,30 @@ class Cache {
         size_t data;
         size_t offset;
 
+        //flag
+        int init;
+
       public:
         CacheBlock() {
+          std :: cout << "CONSTRUCTOR" << std :: endl;
           this->block_size = 0;
           this->set_number = 0;
           this->tag = 0;
           this->data = 0;
-          this->offset - 0;
+          this->offset = 0;
+          this->init = UNINITIALIAZED;
+        }
+        
+        int is_initialized () {
+          if (this->init == INITIALIAZED) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+
+        void initialize () {
+          this->init = INITIALIAZED;
         }
 
         size_t get_block_size() {
@@ -41,7 +59,7 @@ class Cache {
         void set_set_number(size_t n) {
           this->set_number = n;
         }
-        size_t get_tag() {
+        int get_tag() {
           return this->tag;
         }
         void set_tag(size_t n) {
@@ -80,7 +98,8 @@ class Cache {
 
     // virtual Cache(size_t mapping_policy) = 0;
     virtual void initialize_cache() = 0;
-    virtual size_t assign_block_address (unsigned long long memory_address) = 0;
+    virtual size_t get_block_address (unsigned long long memory_address) = 0;
+    virtual void store (unsigned long long memory_address) = 0;
     // virtual ~Cache() = 0;
 };
 
