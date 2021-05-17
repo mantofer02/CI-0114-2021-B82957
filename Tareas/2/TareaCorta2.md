@@ -38,7 +38,9 @@ Con una de las fórmulas derivadas de la ley de Ahmdal podemos calcular los sigu
 
 Para el c y d sacamos porcentajes de los speedup ya definidos previamente
 
-`c) 1.25 * 0.80 = 1`
+`c) 1.25 * 0.80 = 1` <font color='red'> Tendrías que multipliar por `1/0.8`. Además, te piden Overall system. Te faltó tomar en cuenta la segunda aplicación. Debido a que la segunda 
+es serial, se añade multiplicar por `1/0.2`. </font>
 
-`d) 1,98 * 0,20 = 0.396`
+`d) 1,98 * 0,20 = 0.396`  <font color='red'> Tendrías que multipliar por `1/0.2`. Además, te piden Overall system. Te faltó tomar en cuenta la primera aplicación. Debido a que la primera 
+es serial, se añade multiplicar por `1/0.8`. </font>
 
