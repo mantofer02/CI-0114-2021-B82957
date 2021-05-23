@@ -21,6 +21,8 @@ class Cache {
         size_t tag;
         size_t data;
         size_t offset;
+        // para write-back policy
+        size_t dirty_bit;
 
         //flag
         int init;

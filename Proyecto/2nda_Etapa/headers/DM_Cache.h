@@ -14,6 +14,10 @@ class DM_Cache : public Cache {
     size_t get_tag_value(unsigned long long memory_address);
     void store(unsigned long long memory_address) override;
     void store_miss(size_t memory_block_address, size_t memory_tag_value);
-    void store_hit(size_t memory_block_address, size_t memory_tag_value);
+    void store_hit();
+    void load(unsigned long long memory_address);
+    void load_miss();
+    void load_hit();
+    
 };
 #endif
