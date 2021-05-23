@@ -1,6 +1,6 @@
 #include "../headers/DM_Cache.h"
 
-DM_Cache :: DM_Cache (size_t set_amount, size_t block_amount, 
+DM_Cache::DM_Cache (size_t set_amount, size_t block_amount, 
 size_t block_size, size_t cache_access_cycle, size_t memory_access_cycle) {
   
   float result = log2((float)block_size);
@@ -22,7 +22,7 @@ size_t block_size, size_t cache_access_cycle, size_t memory_access_cycle) {
   initialize_cache();
 }
 
-void DM_Cache :: initialize_cache() {
+void DM_Cache::initialize_cache() {
   CacheLine new_block;
   for (int i = 0; i < block_amount; i++) {
     // cache_lines.
@@ -31,19 +31,19 @@ void DM_Cache :: initialize_cache() {
 }
 
 /// for cache assignation
-size_t DM_Cache :: get_block_address(unsigned long long memory_address) {
+size_t DM_Cache::get_block_address(unsigned long long memory_address) {
   // size_t lsb = log2(block_amount);
   return (memory_address % block_amount);
 }
 
 // for cache assigantion
-size_t DM_Cache :: get_tag_value(unsigned long long memory_address) {
+size_t DM_Cache::get_tag_value(unsigned long long memory_address) {
   size_t lsb = log2(block_amount);
   size_t tag_value = memory_address >> lsb;
   return tag_value;
 }
 
-void DM_Cache :: store(unsigned long long memory_address) {
+void DM_Cache::store(unsigned long long memory_address) {
   size_t memory_block_address = get_block_address(memory_address);
   size_t memory_tag_value = get_tag_value(memory_address);
 
@@ -59,8 +59,15 @@ void DM_Cache :: store(unsigned long long memory_address) {
   }
 }
 
-void DM_Cache :: store_miss(size_t memory_block_address, size_t memory_tag_value) {
+void DM_Cache::store_miss(size_t memory_block_address, size_t memory_tag_value) {
   cache_lines[memory_block_address].set_tag(memory_tag_value);
   this->store_misses++;
   this->cpu_cycles += (this->memory_access_cycle + this->cache_access_cycle);
 }
+
+void DM_Cache::store_hit(size_t memory_block_address, size_t memory_tag_value) {
+  this->store_hits++;
+  // revisar esto
+  this->cpu_cycles += this->cache_access_cycle;
+}
+

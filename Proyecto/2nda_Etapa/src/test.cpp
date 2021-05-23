@@ -1,17 +1,17 @@
 #include "../headers/DM_Cache.h"
+#include <stdio.h>
+#include <fstream>
 
 int main(void) {
-  //unsigned long long hexadecimalADecimal(char *cadenaHexadecimal, int longitud) {
-    //   unsigned long long decimal = 0;
-    //   int potencia = 0;
-    //   for (int i = longitud - 1; i >= 0; i--) {
-    //     int valorActual = caracterHexadecimalADecimal(cadenaHexadecimal[i]);
-    //     unsigned long long elevado = pow(BASE, potencia) * valorActual;
-    //     decimal += elevado;
-    //     potencia++;
-    //   }
-    //   return decimal;
-    // }
+
+  std::ifstream input_file("input001.txt");
+  
+  std::string input;
+  while (input_file >> input) {
+    std::cout << input << std::endl;
+  }
+
+
   DM_Cache myCache = DM_Cache(1, 16, 4, 13, 13);
   
   std::string hex = "0xFF";

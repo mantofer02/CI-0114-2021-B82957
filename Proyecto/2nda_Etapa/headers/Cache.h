@@ -6,6 +6,7 @@
 
 #define DIRECT_MAPPING 1
 #define FULLY_ASSOCIATIVE 2
+
 #define UNINITIALIAZED 0
 #define INITIALIAZED 1
 class Cache {
@@ -89,10 +90,13 @@ class Cache {
     // size_t index_size;
 
     //flags
-    size_t write_allocate;
+    // hit flags
     size_t write_through;
     size_t write_back;
 
+    // miss flags
+    size_t no_write_allocate;
+    size_t write_allocate;
 
   public:
 
@@ -100,8 +104,15 @@ class Cache {
     virtual void initialize_cache() = 0;
     virtual size_t get_block_address (unsigned long long memory_address) = 0;
     virtual void store (unsigned long long memory_address) = 0;
+    void print_results() {
+      std::cout << "Total Loads: " << this->load_hits + this->load_misses << std::endl;
+      std::cout << "Total Stores: " << this->store_hits + this->store_misses << std::endl;
+      std::cout << "Load Hits: " << this->load_hits << std::endl;
+      std::cout << "Load Misses: " << this->load_misses << std::endl;
+      std::cout << "Store Hits: " << this->store_hits << std::endl;
+      std::cout << "Store Misses: " << this->store_misses << std::endl;
+      std::cout << "Total CPU Cycles: " << this->cpu_cycles << std::endl;
+    }
     // virtual ~Cache() = 0;
 };
-
-
 #endif
