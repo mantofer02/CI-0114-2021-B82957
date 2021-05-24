@@ -101,7 +101,6 @@ class Cache {
     size_t write_allocate;
 
   public:
-
     // virtual Cache(size_t mapping_policy) = 0;
     virtual void initialize_cache() = 0;
     virtual size_t get_block_address (unsigned long long memory_address) = 0;
@@ -114,6 +113,17 @@ class Cache {
       std::cout << "Store Hits: " << this->store_hits << std::endl;
       std::cout << "Store Misses: " << this->store_misses << std::endl;
       std::cout << "Total CPU Cycles: " << this->cpu_cycles << std::endl;
+    }
+    void set_write_policy(std::string input) {
+      if (input == "write-through") {
+        this->write_through = 1;
+      }
+    }
+
+    void set_miss_policy(std::string input) {
+      if (input == "no-write-allocate") {
+        this->no_write_allocate = 1;
+      }
     }
     // virtual ~Cache() = 0;
 };
