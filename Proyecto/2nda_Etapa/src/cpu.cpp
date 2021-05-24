@@ -1,4 +1,5 @@
 #include "../headers/DM_Cache.h"
+#include "../headers/FA_Cache.h"
 #include <stdio.h>
 #include <fstream>
 
@@ -25,6 +26,7 @@ int main(int argc, char** argv) {
     std::cout << "\tInput file" << std::endl;
     return 1;  
   } else {
+
     size_t input_set_amount = (size_t)atoi(argv[1]);
     size_t input_block_amount = (size_t)atoi(argv[2]);
     size_t input_block_size = (size_t)atoi(argv[3]);
@@ -37,11 +39,20 @@ int main(int argc, char** argv) {
     std::string input_instruction;
     std::string input_hex;
     
-    DM_Cache myCache = DM_Cache(input_set_amount, input_block_amount,
-    input_block_size, CACHE_ACCESS, MEMORY_ACCESS);
-    myCache.set_miss_policy(input_miss_policy);
-    myCache.set_write_policy(input_write_policy);
+    Cache* cacheptr;
 
+    if (input_set_amount == 1) {
+      cacheptr = new FA_Cache(input_set_amount, input_block_amount,
+      input_block_size, CACHE_ACCESS, MEMORY_ACCESS);
+      cacheptr->set_algorithm(input_replacement_alg);
+    } else {
+      cacheptr = new DM_Cache(input_set_amount, input_block_amount,
+      input_block_size, CACHE_ACCESS, MEMORY_ACCESS);
+    }
+
+    cacheptr->set_miss_policy(input_miss_policy);
+    cacheptr->set_write_policy(input_write_policy);
+    
     int counter = 0;
     while (input_file >> input) {
       if (counter == 0) {
@@ -52,14 +63,14 @@ int main(int argc, char** argv) {
         input_hex = input;
         int i_hex = std::stoi(input_hex, nullptr, 0);
         if (input_instruction == "s") {
-          myCache.store(i_hex);
+          cacheptr->store(i_hex);
         } else {
-          myCache.load(i_hex);
+          cacheptr->load(i_hex);
         }
       }
       counter = (counter + 1) % 3;
     }
-    myCache.print_results();
+    cacheptr->print_results();
   }
   return 1;
 }

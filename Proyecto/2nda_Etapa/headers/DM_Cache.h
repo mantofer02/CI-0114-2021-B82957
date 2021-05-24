@@ -15,7 +15,7 @@ class DM_Cache : public Cache {
     void store(unsigned long long memory_address) override;
     void store_miss(size_t memory_block_address, size_t memory_tag_value);
     void store_hit();
-    void load(unsigned long long memory_address);
+    void load(unsigned long long memory_address) override;
     void load_miss();
     void load_hit();
     

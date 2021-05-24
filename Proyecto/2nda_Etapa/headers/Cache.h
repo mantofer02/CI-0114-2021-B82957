@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 
+#define LRU 1
+#define FIFO 2
+
 #define DIRECT_MAPPING 1
 #define FULLY_ASSOCIATIVE 2
 
@@ -100,11 +103,14 @@ class Cache {
     size_t no_write_allocate;
     size_t write_allocate;
 
+    int replacement_alg;
+
   public:
     // virtual Cache(size_t mapping_policy) = 0;
     virtual void initialize_cache() = 0;
     virtual size_t get_block_address (unsigned long long memory_address) = 0;
     virtual void store (unsigned long long memory_address) = 0;
+    virtual void load (unsigned long long memory_address) = 0;
     void print_results() {
       std::cout << "Total Loads: " << this->load_hits + this->load_misses << std::endl;
       std::cout << "Total Stores: " << this->store_hits + this->store_misses << std::endl;
@@ -125,6 +131,16 @@ class Cache {
         this->no_write_allocate = 1;
       }
     }
+
+  void set_algorithm(std::string alg) {
+    if (alg == "lru") {
+      this->replacement_alg = LRU;
+    }
+    if (alg == "fifo") {
+      this->replacement_alg = FIFO;
+    }
+  }
+
     // virtual ~Cache() = 0;
 };
 #endif

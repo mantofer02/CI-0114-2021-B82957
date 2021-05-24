@@ -16,12 +16,14 @@ size_t block_size, size_t cache_access_cycle, size_t memory_access_cycle) {
     this->store_misses = 0;
     this->load_hits = 0;
     this->load_misses = 0;
-    
     this->write_back = 0;
     this->write_through = 0;
     this->write_allocate = 0;
     this->no_write_allocate = 0;
-
+    this->replacement_alg = 0;
+    this->iter = 0;
+    this->counter = 0;
+    this->lru_array = new int[block_amount];
     initialize_cache();
   } else {
     std :: cout << "Error at cache initialization" << std :: endl;
@@ -60,6 +62,10 @@ void FA_Cache::store(unsigned long long memory_address) {
       store_miss(memory_block_address, memory_tag_value);
     } else {
       store_hit();
+      if (this->replacement_alg == LRU) {
+        lru_array[memory_block_address] = counter++;
+        counter+=1;
+      }
     }
   }
 }
@@ -69,9 +75,25 @@ void FA_Cache::store_miss(size_t memory_block_address, size_t memory_tag_value) 
     // el no write allocate escribe en memoria principal
     // pero como no hay entonces se va a obviar
   }else {
-    cache_lines[memory_block_address].set_tag(memory_tag_value);
+    if (replacement_alg == FIFO) {
+      cache_lines[this->iter].set_tag(memory_tag_value);
+      this->iter = ((iter + 1) % this->block_amount);
+    }
+    
+    if (replacement_alg == LRU) {
+      int lru = this->counter;
+      int index = 0;
+      for (size_t i = 0; i < this->block_amount; i++) {
+        if (this->lru_array[i] < lru) {
+          lru = this->lru_array[i];
+          index = i;
+        }
+      }
+      cache_lines[index].set_tag(memory_tag_value);
+    } else {
+      cache_lines[memory_block_address].set_tag(memory_tag_value);
+    }
   }
-  
   this->store_misses++;
   this->cpu_cycles += (this->memory_access_cycle + this->cache_access_cycle);
 }
@@ -96,6 +118,10 @@ void FA_Cache::load(unsigned long long memory_address) {
       load_miss();
     } else {
       load_hit();
+      if (this->replacement_alg == LRU) {
+        lru_array[memory_block_address] = counter++;
+        counter+=1;
+      }
     }
   } 
 }
