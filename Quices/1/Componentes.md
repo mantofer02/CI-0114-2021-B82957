@@ -44,7 +44,7 @@ La ALU tendra OPCODE de 16 bits, además entre sus salidas debe de mostrar los f
 * Zero
 * Negative
 
-El output de la Unidad Arimetica Logica será de 16 bits.
+El output de la Unidad Arimetica Logica será de 32 bits.
 
 La ALU debe ser capaz de decodificar cada instrucción y ejecutarla. El mapeo de instrucciones debe de hacerse con antelación. Este mapeo esta definido en **Instruction Memory**
 
