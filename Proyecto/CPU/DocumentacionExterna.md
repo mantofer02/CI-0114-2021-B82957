@@ -7,7 +7,7 @@ disqus: hackmd
 Proyecto Final CI-0120
 ===
 **Estudiantes:**
-* Marco Ferraro **B82957**
+* Marco Ferraro **B82957** 
 * Gabriel Revillat **B86524**
 ## Contenido
 
@@ -258,3 +258,7 @@ Versión de Logisim
 Este proyecto se desarrollo con una versión de **Logisim** adjuntada en la carpeta del proyecto. 
 
 Se puede encontrar en este [repositorio](https://https://github.com/Logisim-Ita/Logisim).
+
+Funcionamiento
+---
+Para correr el proyecto se necesita ingresar instrucciones de **32 bits* en *Instruction Memory*. Las instrucciones debenes de estar bajo formato MIP. Análogamente, se necesita un pulso de reloj para completar un ciclo en todo el procesador.
