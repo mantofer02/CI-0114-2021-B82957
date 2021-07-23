@@ -1,10 +1,4 @@
----
-title: 'Documentacion Proyecto MIPS CPU'
-tags: 'Arquitectura de Computadores'
-disqus: hackmd
----
-
-Proyecto Final CI-0120
+Segundo Examen Parcial CI-0120 - Parte A
 ===
 **Estudiantes:**
 * Marco Ferraro **B82957** 
@@ -129,6 +123,20 @@ Nuestro ALU es de instrucciones reducidas. Notese que el espacio de **AluOP** ti
 en la parte aritmética.
 
 En la parte lógica tenemos una serie de **flags** las cuáles nos sirven para identificar si 2 valores son iguales, si hay un overflow de negativos o positivos.
+
+Forwarding Unit
+---
+
+El propósito de la unidad de *forwarding* es garantizar que la instrucción que ingresa a la stage **EX** del *pipeline* reciba los valores correctos para sus registros operandos.
+
+**Entradas**:
+* **ID/EX.rs** y **ID/EX.rt**: 5 bits.
+* **EX/MEM.rd** y **MEM/WB.rd**: 5 bits.
+* **EX/MEM.RegWrite** y **MEM/WB.RegWrite**: 1 bit.
+
+**Salidas**:
+* **Forward A**: 2 bits. Controla la selección del operando X del ALU.
+* **Forward B**: 2 bits. Controla la selección del operando Y del ALU.
 
 Data Memory
 ---
