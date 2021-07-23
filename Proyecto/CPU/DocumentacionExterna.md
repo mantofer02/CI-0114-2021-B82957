@@ -170,7 +170,6 @@ El proceso de **Instruction Fetch** se encarga de:
 
 Mientras que el proceso de **Intruction Decode**:
 * Obtiene los valores de los registros de la instrucción
-* 
 
 <center>
 
@@ -253,3 +252,9 @@ Componentes Externos
 ![](https://i.imgur.com/EFeRXv2.png)
 *Almacenamiento de las Intrucciones*
 </center>
+
+Versión de Logisim
+---
+Este proyecto se desarrollo con una versión de **Logisim** adjuntada en la carpeta del proyecto. 
+
+Se puede encontrar en este [repositorio](https://https://github.com/Logisim-Ita/Logisim).
